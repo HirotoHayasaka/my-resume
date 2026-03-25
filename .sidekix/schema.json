@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sidekix.jp/schema/resume-template.json",
+  "title": "SidekiX Resume Template Schema",
+  "description": "SidekiXレジュメテンプレートの全frontmatterフィールドを定義するJSONスキーマ",
+  "type": "object",
+  "properties": {
+    "profile": {
+      "type": "object",
+      "description": "profile.md のfrontmatter定義",
+      "properties": {
+        "nickname": {
+          "type": "string",
+          "description": "表示名（ニックネームまたは氏名）"
+        },
+        "position": {
+          "type": "string",
+          "description": "ポジション（例: フルスタックエンジニア）"
+        },
+        "career_started_year": {
+          "type": "integer",
+          "minimum": 1970,
+          "maximum": 2030,
+          "description": "キャリア開始年（YYYY形式）"
+        },
+        "birth_year": {
+          "type": "integer",
+          "minimum": 1940,
+          "maximum": 2010,
+          "description": "生年（YYYY形式、1940-2010）"
+        },
+        "education": {
+          "type": "string",
+          "description": "学歴（自由記述）"
+        },
+        "profile_image_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "プロフィール画像のURL"
+        },
+        "x_account_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "X（旧Twitter）アカウントのURL"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "skills": {
+      "type": "object",
+      "description": "skills.md のfrontmatter定義",
+      "properties": {
+        "languages": {
+          "type": "array",
+          "description": "プログラミング言語一覧",
+          "items": {
+            "$ref": "#/$defs/skill"
+          }
+        },
+        "frameworks": {
+          "type": "array",
+          "description": "フレームワーク・ライブラリ一覧",
+          "items": {
+            "$ref": "#/$defs/skill"
+          }
+        },
+        "services": {
+          "type": "array",
+          "description": "クラウド・ミドルウェア・SaaS等のサービス一覧",
+          "items": {
+            "$ref": "#/$defs/skill"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "wish": {
+      "type": "object",
+      "description": "wish.md のfrontmatter定義",
+      "properties": {
+        "availability": {
+          "type": "string",
+          "enum": ["fulltime", "partial", "sidejob", "not_available"],
+          "description": "稼働可能状況（fulltime: フルタイム, partial: 一部稼働, sidejob: 副業, not_available: 不可）"
+        },
+        "desired_annual_income": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "希望年収（万円単位）"
+        },
+        "preferred_locations": {
+          "type": "string",
+          "description": "希望勤務地（カンマ区切りで複数指定可）"
+        },
+        "desired_hourly_rate": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "希望時給（円単位、副業・業務委託向け）"
+        },
+        "available_hours_per_week": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 168,
+          "description": "週あたり稼働可能時間（0-168）"
+        },
+        "notice_period": {
+          "type": "string",
+          "description": "退職・参画までの期間（例: 1ヶ月、即日）"
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "project": {
+      "type": "object",
+      "description": "projects/*.md のfrontmatter定義",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "プロジェクト名"
+        },
+        "company": {
+          "type": "string",
+          "description": "所属企業・クライアント名"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published"],
+          "default": "published",
+          "description": "公開ステータス（draft: 下書き, published: 公開）"
+        },
+        "started": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+          "description": "開始年月（YYYY-MM形式）"
+        },
+        "ended": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+          "description": "終了年月（YYYY-MM形式、進行中は省略）"
+        },
+        "role": {
+          "type": "string",
+          "description": "担当ロール（例: テックリード、バックエンドエンジニア）"
+        },
+        "team_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "チーム人数"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "使用技術一覧"
+        }
+      },
+      "required": ["title", "company"],
+      "additionalProperties": false
+    },
+    "history": {
+      "type": "object",
+      "description": "histories/*.md のfrontmatter定義",
+      "properties": {
+        "company": {
+          "type": "string",
+          "description": "企業名"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["employee", "freelance", "sidejob"],
+          "description": "雇用形態（employee: 正社員, freelance: フリーランス, sidejob: 副業）"
+        },
+        "position": {
+          "type": "string",
+          "description": "ポジション・役職"
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+          "description": "入社・参画年月（YYYY-MM形式）"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$",
+          "description": "退社・離脱年月（YYYY-MM形式、在職中は省略）"
+        },
+        "summary": {
+          "type": "string",
+          "maxLength": 120,
+          "description": "概要（120文字以内）"
+        },
+        "skills": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "使用技術一覧"
+        }
+      },
+      "required": ["company", "type", "position", "from"],
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "skill": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "スキル名"
+        },
+        "experience": {
+          "type": "string",
+          "enum": ["half_year", "1_year", "2_years", "3_years", "over_3_years"],
+          "description": "経験年数（half_year: 半年, 1_year: 1年, 2_years: 2年, 3_years: 3年, over_3_years: 3年以上）"
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    }
+  }
+}
